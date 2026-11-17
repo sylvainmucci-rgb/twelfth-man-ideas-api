@@ -1,0 +1,24 @@
+# Blueprint Render — NE PAS appliquer sans l'accord de Sylvain (décision d'hébergement).
+# Attention : sur l'offre gratuite, le disque est éphémère (db.json perdu à chaque redéploiement/mise en veille).
+# Pour conserver les idées : offre payante avec disque persistant (bloc « disk » ci-dessous) ou base externe.
+services:
+  - type: web
+    name: twelfth-man-ideas-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /health
+    envVars:
+      - key: ADMIN_KEY
+        generateValue: true
+      - key: DEVICE_SALT
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        value: https://twelfth-man-manager.surge.sh,https://localhost,capacitor://localhost,null
+      - key: DATA_DIR
+        value: ./data
+    # disk:            # (offre payante) stockage persistant
+    #   name: ideas-data
+    #   mountPath: /var/data
+    #   sizeGB: 1
